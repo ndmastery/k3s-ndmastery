@@ -1,0 +1,7 @@
+.DS_Store
+benchmarks/results/*.tmp
+benchmarks/raw/
+apps/*/generated/*.yaml
+platform/generated/*.yaml
+!apps/*/generated/README.md
+!platform/generated/README.md

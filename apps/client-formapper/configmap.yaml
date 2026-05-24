@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-formapper-config
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-formapper
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+data:
+  NODE_ENV: "production"
+  PORT: "3100"
+  HOST: "0.0.0.0"
+  PUBLIC_ORIGIN: "https://web.formapper.com"
+  ORIGIN: "https://web.formapper.com"
+  PUBLIC_SITE_URL: "https://web.formapper.com"
+  PUBLIC_SSO_URL: "https://sso.ndmastery.com"
+  PUBLIC_SSO_CLIENT_ID: "formapper"
+  PUBLIC_FORMAPPER_AUTOSAVE_INTERVAL_MS: "300000"
+  FORMAPPER_BACKEND_WS_URL: "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/formapper"
+  SSO_BACKEND_WS_URL: "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"

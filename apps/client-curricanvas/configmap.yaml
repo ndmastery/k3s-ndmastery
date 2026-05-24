@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-curricanvas-config
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-curricanvas
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+data:
+  NODE_ENV: "production"
+  PORT: "3104"
+  HOST: "0.0.0.0"
+  PUBLIC_ORIGIN: "https://web.curricanvas.com"
+  ORIGIN: "https://web.curricanvas.com"
+  PUBLIC_APP_URL: "https://web.curricanvas.com"
+  PUBLIC_SSO_URL: "https://sso.ndmastery.com"
+  PUBLIC_SSO_CLIENT_ID: "curricanvas"
+  PUBLIC_BACKEND_WS_URL: "wss://server.ndmastery.com"
+  SSO_BACKEND_WS_URL: "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"

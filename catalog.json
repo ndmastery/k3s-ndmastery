@@ -1,0 +1,203 @@
+{
+  "namespace": "ndmastery",
+  "registry": "registry.ndmastery.com",
+  "acmeEmail": "security@ndmastery.com",
+  "targetNode": {
+    "provider": "Tencent Cloud Lighthouse",
+    "os": "Ubuntu 24.04",
+    "cpuCores": 4,
+    "memoryGiB": 8
+  },
+  "apps": [
+    {
+      "name": "web-annajah",
+      "projectPath": "/Users/dimasyudha/proj/client-annajah",
+      "port": 3001,
+      "domain": "annajahfoundation.sch.id",
+      "url": "https://annajahfoundation.sch.id",
+      "runtime": "static-qwik",
+      "buildCommand": "bun run build",
+      "staticOutput": "build",
+      "healthPath": "/healthz",
+      "publicEnv": {
+        "VITE_CLIENT_PORT": "3001",
+        "VITE_COMPANY_URL": "https://annajahfoundation.sch.id",
+        "VITE_SITE_URL": "https://annajahfoundation.sch.id",
+        "VITE_SSO_URL": "https://sso.ndmastery.com"
+      }
+    },
+    {
+      "name": "client-formapper",
+      "projectPath": "/Users/dimasyudha/proj/client-register",
+      "port": 3100,
+      "domain": "web.formapper.com",
+      "url": "https://web.formapper.com",
+      "runtime": "qwik-node",
+      "buildCommand": "bun run build.client && bun run build.server",
+      "entry": "build/entry.node-server.js",
+      "healthPath": "/",
+      "rpcPaths": [
+        "formapper",
+        "sso"
+      ],
+      "publicEnv": {
+        "PUBLIC_SITE_URL": "https://web.formapper.com",
+        "PUBLIC_SSO_URL": "https://sso.ndmastery.com",
+        "PUBLIC_SSO_CLIENT_ID": "formapper",
+        "PUBLIC_FORMAPPER_AUTOSAVE_INTERVAL_MS": "300000",
+        "FORMAPPER_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/formapper",
+        "SSO_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"
+      }
+    },
+    {
+      "name": "client-scorexam",
+      "projectPath": "/Users/dimasyudha/proj/client-scorexam",
+      "port": 3101,
+      "domain": "web.scorexam.com",
+      "url": "https://web.scorexam.com",
+      "runtime": "qwik-node",
+      "buildCommand": "bun run build.client && bun run build.server",
+      "entry": "build/entry.node-server.js",
+      "healthPath": "/",
+      "rpcPaths": [
+        "sso"
+      ],
+      "publicEnv": {
+        "PUBLIC_SITE_URL": "https://web.scorexam.com",
+        "PUBLIC_SSO_URL": "https://sso.ndmastery.com",
+        "PUBLIC_SSO_CLIENT_ID": "scorexam",
+        "SSO_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"
+      }
+    },
+    {
+      "name": "client-storagarage",
+      "projectPath": "/Users/dimasyudha/proj/client-serveregistry",
+      "port": 3102,
+      "domain": "web.storagarage.com",
+      "url": "https://web.storagarage.com",
+      "runtime": "qwik-node",
+      "buildCommand": "bun run build.client && bun run build.server",
+      "entry": "build/entry.node-server.js",
+      "injectQwikNodeAdapter": true,
+      "healthPath": "/",
+      "rpcPaths": [
+        "storagarage",
+        "sso"
+      ],
+      "publicEnv": {
+        "PUBLIC_SITE_URL": "https://web.storagarage.com",
+        "PUBLIC_SSO_URL": "https://sso.ndmastery.com",
+        "PUBLIC_SSO_CLIENT_ID": "storagarage",
+        "STORAGARAGE_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/storagarage",
+        "SSO_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"
+      }
+    },
+    {
+      "name": "server-ndmastery",
+      "projectPath": "/Users/dimasyudha/proj/server-ndmastery",
+      "port": 4000,
+      "domain": "server.ndmastery.com",
+      "url": "https://server.ndmastery.com",
+      "runtime": "zig-gateway",
+      "buildCommand": "zig build -Doptimize=ReleaseFast",
+      "healthPath": "/healthz",
+      "secretKeys": [
+        "CC_DATABASE_URL",
+        "CC_PG_PASSWORD",
+        "CC_COS_SECRET_ID",
+        "CC_COS_SECRET_KEY",
+        "CC_SMTP_PASS",
+        "CC_GEMINI_API_KEYS",
+        "SSO_DATABASE_URL",
+        "SSO_PG_PASSWORD",
+        "SSO_JWT_SECRET",
+        "SSO_SMTP_PASS",
+        "SSO_TURNSTILE_SECRET_KEY",
+        "FORMAPPER_PG_PASSWORD",
+        "SCOREXAM_DATABASE_URL",
+        "SCOREXAM_GEMINI_API_KEY",
+        "SCOREXAM_COS_SECRET_KEY",
+        "SG_DATABASE_URL",
+        "SG_PG_PASSWORD",
+        "CAL_DATABASE_URL",
+        "CAL_SMTP_PASSWORD"
+      ],
+      "publicEnv": {
+        "GATEWAY_HOST": "0.0.0.0",
+        "GATEWAY_PORT": "4000",
+        "SSO_SITE_URL": "https://sso.ndmastery.com",
+        "SSO_ISSUER": "https://sso.ndmastery.com",
+        "SSO_WEBAUTHN_RP_ID": "sso.ndmastery.com"
+      }
+    },
+    {
+      "name": "web-curricanvas",
+      "projectPath": "/Users/dimasyudha/projects/next-curricanvas",
+      "port": 3002,
+      "domain": "curricanvas.com",
+      "url": "https://curricanvas.com",
+      "runtime": "static-qwik",
+      "buildCommand": "bun run build",
+      "staticOutput": "build",
+      "healthPath": "/healthz",
+      "publicEnv": {}
+    },
+    {
+      "name": "web-calconversion",
+      "projectPath": "/Users/dimasyudha/projects/web_calconversion",
+      "port": 3003,
+      "domain": "calconversion.com",
+      "url": "https://calconversion.com",
+      "runtime": "static-qwik-vercel",
+      "buildCommand": "bun run build.vercel",
+      "staticOutput": ".vercel/output/static",
+      "healthPath": "/healthz",
+      "publicEnv": {
+        "PUBLIC_SITE_URL": "https://calconversion.com",
+        "PUBLIC_CONTACT_EMAIL": "support@calconversion.com"
+      }
+    },
+    {
+      "name": "client-sso",
+      "projectPath": "/Users/dimasyudha/projects/web_sso",
+      "port": 3103,
+      "domain": "sso.ndmastery.com",
+      "url": "https://sso.ndmastery.com",
+      "runtime": "qwik-node",
+      "buildCommand": "bun run build.client && bun run build.server",
+      "entry": "server/entry.node.js",
+      "healthPath": "/.well-known/openid-configuration",
+      "rpcPaths": [
+        "sso"
+      ],
+      "publicEnv": {
+        "PUBLIC_SITE_URL": "https://sso.ndmastery.com",
+        "PUBLIC_SSO_ISSUER": "https://sso.ndmastery.com",
+        "PUBLIC_TURNSTILE_SITE_KEY": "",
+        "SSO_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"
+      }
+    },
+    {
+      "name": "client-curricanvas",
+      "projectPath": "/Users/dimasyudha/projects/web_curricanvas-app",
+      "port": 3104,
+      "domain": "web.curricanvas.com",
+      "url": "https://web.curricanvas.com",
+      "runtime": "svelte-node",
+      "buildCommand": "bun run build",
+      "entry": "build/index.js",
+      "healthPath": "/",
+      "rpcPaths": [
+        "curricanvas",
+        "sso"
+      ],
+      "publicEnv": {
+        "PUBLIC_APP_URL": "https://web.curricanvas.com",
+        "PUBLIC_SSO_URL": "https://sso.ndmastery.com",
+        "PUBLIC_SSO_CLIENT_ID": "curricanvas",
+        "PUBLIC_BACKEND_WS_URL": "wss://server.ndmastery.com",
+        "SSO_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"
+      }
+    }
+  ]
+}

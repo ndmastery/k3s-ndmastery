@@ -1,0 +1,66 @@
+apiVersion: traefik.io/v1alpha1
+kind: TraefikService
+metadata:
+  name: client-storagarage-wrr
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-storagarage
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  weighted:
+    sticky:
+      cookie:
+        name: client-storagarage-route
+        httpOnly: true
+        secure: true
+        sameSite: lax
+    services:
+      - name: client-storagarage-stable
+        port: 3102
+      - name: client-storagarage-canary
+        port: 3102
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: client-storagarage
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-storagarage
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`web.storagarage.com`)
+      kind: Rule
+      services:
+        - name: client-storagarage-wrr
+          kind: TraefikService
+      middlewares:
+        - name: ndmastery-secure-headers
+        - name: ndmastery-compress
+  tls:
+    secretName: client-storagarage-tls
+    options:
+      name: ndmastery-modern-tls
+      namespace: ndmastery
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: client-storagarage-tls
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-storagarage
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  secretName: client-storagarage-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - web.storagarage.com

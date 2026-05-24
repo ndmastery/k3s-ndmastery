@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-curricanvas-config
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: web-curricanvas
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+data:
+  NODE_ENV: "production"
+  PORT: "3002"
+  HOST: "0.0.0.0"
+  PUBLIC_ORIGIN: "https://curricanvas.com"
+  ORIGIN: "https://curricanvas.com"

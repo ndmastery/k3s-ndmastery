@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-sso-config
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-sso
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+data:
+  NODE_ENV: "production"
+  PORT: "3103"
+  HOST: "0.0.0.0"
+  PUBLIC_ORIGIN: "https://sso.ndmastery.com"
+  ORIGIN: "https://sso.ndmastery.com"
+  PUBLIC_SITE_URL: "https://sso.ndmastery.com"
+  PUBLIC_SSO_ISSUER: "https://sso.ndmastery.com"
+  PUBLIC_TURNSTILE_SITE_KEY: ""
+  SSO_BACKEND_WS_URL: "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/sso"

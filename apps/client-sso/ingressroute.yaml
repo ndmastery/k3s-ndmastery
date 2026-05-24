@@ -1,0 +1,66 @@
+apiVersion: traefik.io/v1alpha1
+kind: TraefikService
+metadata:
+  name: client-sso-wrr
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-sso
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  weighted:
+    sticky:
+      cookie:
+        name: client-sso-route
+        httpOnly: true
+        secure: true
+        sameSite: lax
+    services:
+      - name: client-sso-stable
+        port: 3103
+      - name: client-sso-canary
+        port: 3103
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: client-sso
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-sso
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`sso.ndmastery.com`)
+      kind: Rule
+      services:
+        - name: client-sso-wrr
+          kind: TraefikService
+      middlewares:
+        - name: ndmastery-secure-headers
+        - name: ndmastery-compress
+  tls:
+    secretName: client-sso-tls
+    options:
+      name: ndmastery-modern-tls
+      namespace: ndmastery
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: client-sso-tls
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-sso
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  secretName: client-sso-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - sso.ndmastery.com

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-annajah-stable
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: web-annajah
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+    rollouts.argoproj.io/service-role: stable
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3001
+      targetPort: http
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: web-annajah
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-annajah-canary
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: web-annajah
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+    rollouts.argoproj.io/service-role: canary
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3001
+      targetPort: http
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: web-annajah

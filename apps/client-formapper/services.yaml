@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-formapper-stable
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-formapper
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+    rollouts.argoproj.io/service-role: stable
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3100
+      targetPort: http
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: client-formapper
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-formapper-canary
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-formapper
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+    rollouts.argoproj.io/service-role: canary
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3100
+      targetPort: http
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: client-formapper

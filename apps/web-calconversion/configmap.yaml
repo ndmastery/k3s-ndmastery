@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-calconversion-config
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: web-calconversion
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+data:
+  NODE_ENV: "production"
+  PORT: "3003"
+  HOST: "0.0.0.0"
+  PUBLIC_ORIGIN: "https://calconversion.com"
+  ORIGIN: "https://calconversion.com"
+  PUBLIC_SITE_URL: "https://calconversion.com"
+  PUBLIC_CONTACT_EMAIL: "support@calconversion.com"

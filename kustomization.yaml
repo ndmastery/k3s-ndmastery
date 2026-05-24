@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - platform
+  - apps/web-annajah
+  - apps/client-formapper
+  - apps/client-scorexam
+  - apps/client-storagarage
+  - apps/server-ndmastery
+  - apps/web-curricanvas
+  - apps/web-calconversion
+  - apps/client-sso
+  - apps/client-curricanvas

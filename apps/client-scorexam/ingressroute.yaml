@@ -1,0 +1,66 @@
+apiVersion: traefik.io/v1alpha1
+kind: TraefikService
+metadata:
+  name: client-scorexam-wrr
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-scorexam
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  weighted:
+    sticky:
+      cookie:
+        name: client-scorexam-route
+        httpOnly: true
+        secure: true
+        sameSite: lax
+    services:
+      - name: client-scorexam-stable
+        port: 3101
+      - name: client-scorexam-canary
+        port: 3101
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: client-scorexam
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-scorexam
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`web.scorexam.com`)
+      kind: Rule
+      services:
+        - name: client-scorexam-wrr
+          kind: TraefikService
+      middlewares:
+        - name: ndmastery-secure-headers
+        - name: ndmastery-compress
+  tls:
+    secretName: client-scorexam-tls
+    options:
+      name: ndmastery-modern-tls
+      namespace: ndmastery
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: client-scorexam-tls
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: client-scorexam
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  secretName: client-scorexam-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - web.scorexam.com

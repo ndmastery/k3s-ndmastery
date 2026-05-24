@@ -1,0 +1,66 @@
+apiVersion: traefik.io/v1alpha1
+kind: TraefikService
+metadata:
+  name: web-annajah-wrr
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: web-annajah
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  weighted:
+    sticky:
+      cookie:
+        name: web-annajah-route
+        httpOnly: true
+        secure: true
+        sameSite: lax
+    services:
+      - name: web-annajah-stable
+        port: 3001
+      - name: web-annajah-canary
+        port: 3001
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: web-annajah
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: web-annajah
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`annajahfoundation.sch.id`)
+      kind: Rule
+      services:
+        - name: web-annajah-wrr
+          kind: TraefikService
+      middlewares:
+        - name: ndmastery-secure-headers
+        - name: ndmastery-compress
+  tls:
+    secretName: web-annajah-tls
+    options:
+      name: ndmastery-modern-tls
+      namespace: ndmastery
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: web-annajah-tls
+  namespace: ndmastery
+  labels:
+    app.kubernetes.io/name: web-annajah
+    app.kubernetes.io/part-of: ndmastery
+    app.kubernetes.io/managed-by: argo-rollouts
+spec:
+  secretName: web-annajah-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+    - annajahfoundation.sch.id
