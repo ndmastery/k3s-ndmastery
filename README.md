@@ -4,16 +4,41 @@ This repository deploys all NDMastery applications into one K3s namespace, `ndma
 
 The repo intentionally does **not** commit guessed CPU, memory, probe, timeout, HPA, or rollout timing values. Those files are generated after running benchmarks on the target VM.
 
+## VM Runbook
+
+Follow the full step-by-step Tencent VM guide in [docs/VM_DEPLOYMENT_RUNBOOK.md](docs/VM_DEPLOYMENT_RUNBOOK.md).
+
+The recommended server layout is:
+
+```bash
+/opt/ndmastery/k3s
+/opt/ndmastery/apps/<application-repository>
+```
+
+After cloning the app repositories on the VM, rewrite `catalog.json` paths with:
+
+```bash
+./scripts/configure-vm-catalog-paths.mjs --write --require-existing
+```
+
 ## Flow
 
 ```bash
+./scripts/bootstrap-vm-prereqs.sh
 ./scripts/install-controllers.sh
+./scripts/preflight-vm.sh
 ./scripts/build-images.sh --push
 ./benchmarks/run-target-benchmarks.sh
-./scripts/generate-resource-overlays.mjs --image-tag "$(git rev-parse --short=12 HEAD)"
+./scripts/generate-resource-overlays.mjs
 ./scripts/verify.sh --dry-run
 ./scripts/apply.sh
 ./scripts/verify.sh
+```
+
+For a normal release after the VM is already prepared:
+
+```bash
+./scripts/deploy-all.sh
 ```
 
 ## Availability Note
