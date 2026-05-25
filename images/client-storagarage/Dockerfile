@@ -3,6 +3,16 @@ FROM oven/bun:1.3-alpine AS build
 WORKDIR /app
 ARG PUBLIC_SITE_URL="https://web.storagarage.com"
 ENV PUBLIC_SITE_URL=$PUBLIC_SITE_URL
+ARG PUBLIC_STORAGE_URL="https://s3.storagarage.com"
+ENV PUBLIC_STORAGE_URL=$PUBLIC_STORAGE_URL
+ARG PUBLIC_REGISTRY_URL="https://registry.storagarage.com"
+ENV PUBLIC_REGISTRY_URL=$PUBLIC_REGISTRY_URL
+ARG PUBLIC_STORE_URL="https://store.storagarage.com"
+ENV PUBLIC_STORE_URL=$PUBLIC_STORE_URL
+ARG PUBLIC_SSM_URL="https://ssm.storagarage.com"
+ENV PUBLIC_SSM_URL=$PUBLIC_SSM_URL
+ARG PUBLIC_STORAGARAGE_ORIGINS="https://web.storagarage.com,https://s3.storagarage.com,https://registry.storagarage.com,https://store.storagarage.com,https://ssm.storagarage.com"
+ENV PUBLIC_STORAGARAGE_ORIGINS=$PUBLIC_STORAGARAGE_ORIGINS
 ARG PUBLIC_SSO_URL="https://sso.ndmastery.com"
 ENV PUBLIC_SSO_URL=$PUBLIC_SSO_URL
 ARG PUBLIC_SSO_CLIENT_ID="storagarage"
@@ -23,7 +33,8 @@ RUN bun run build.client && bun run build.server
 FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runtime
 LABEL org.opencontainers.image.title="client-storagarage" \
       org.opencontainers.image.vendor="ndmastery" \
-      org.opencontainers.image.url="https://web.storagarage.com"
+      org.opencontainers.image.url="https://web.storagarage.com" \
+      org.opencontainers.image.description="Storagarage web, storage, registry, publishing, and secrets frontend"
 WORKDIR /app
 ENV NODE_ENV=production \
     PROXY_PORT=3102 \

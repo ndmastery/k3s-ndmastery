@@ -34,7 +34,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`web.storagarage.com`)
+    - match: Host(`web.storagarage.com`) || Host(`s3.storagarage.com`) || Host(`registry.storagarage.com`) || Host(`store.storagarage.com`) || Host(`ssm.storagarage.com`)
       kind: Rule
       services:
         - name: client-storagarage-wrr
@@ -64,3 +64,7 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - web.storagarage.com
+    - s3.storagarage.com
+    - registry.storagarage.com
+    - store.storagarage.com
+    - ssm.storagarage.com

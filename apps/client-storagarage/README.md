@@ -1,7 +1,13 @@
 # client-storagarage
 
 Project: `/Users/dimasyudha/proj/client-serveregistry`  
-Domain: `https://web.storagarage.com`  
+Primary domain: `https://web.storagarage.com`  
+Menu domains:
+- Storage: `https://s3.storagarage.com`
+- Registry: `https://registry.storagarage.com`
+- Publishing: `https://store.storagarage.com`
+- Secrets: `https://ssm.storagarage.com`
+
 Container port: `3102`  
 Runtime: `qwik-node`
 

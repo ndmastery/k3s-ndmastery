@@ -143,7 +143,7 @@ if [[ "$SKIP_DNS" == "0" ]]; then
       else
         fail "DNS ${domain} resolves to ${answers[*]}, expected ${public_ip}"
       fi
-    done < <(jq -r '.apps[].domain' catalog.json)
+    done < <(jq -r '.apps[] | ([.domain] + (.domains // [])) | unique[]' catalog.json)
   fi
 else
   warn "DNS checks skipped"

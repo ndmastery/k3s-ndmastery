@@ -97,6 +97,10 @@ annajahfoundation.sch.id  -> <VM_PUBLIC_IP>
 web.formapper.com         -> <VM_PUBLIC_IP>
 web.scorexam.com          -> <VM_PUBLIC_IP>
 web.storagarage.com       -> <VM_PUBLIC_IP>
+s3.storagarage.com        -> <VM_PUBLIC_IP>
+registry.storagarage.com  -> <VM_PUBLIC_IP>
+store.storagarage.com     -> <VM_PUBLIC_IP>
+ssm.storagarage.com       -> <VM_PUBLIC_IP>
 server.ndmastery.com      -> <VM_PUBLIC_IP>
 curricanvas.com           -> <VM_PUBLIC_IP>
 calconversion.com         -> <VM_PUBLIC_IP>
@@ -120,7 +124,11 @@ Check DNS:
 ```bash
 dig +short annajahfoundation.sch.id
 dig +short web.formapper.com
-dig +short server.ndmastery.com
+dig +short web.storagarage.com
+dig +short s3.storagarage.com
+dig +short registry.storagarage.com
+dig +short store.storagarage.com
+dig +short ssm.storagarage.com
 ```
 
 If `dig` is not available yet, it will be installed by the bootstrap script later.
@@ -453,6 +461,10 @@ for domain in \
   web.formapper.com \
   web.scorexam.com \
   web.storagarage.com \
+  s3.storagarage.com \
+  registry.storagarage.com \
+  store.storagarage.com \
+  ssm.storagarage.com \
   server.ndmastery.com \
   curricanvas.com \
   calconversion.com \

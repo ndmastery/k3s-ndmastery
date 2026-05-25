@@ -74,7 +74,21 @@
       "projectPath": "/Users/dimasyudha/proj/client-serveregistry",
       "port": 3102,
       "domain": "web.storagarage.com",
+      "domains": [
+        "web.storagarage.com",
+        "s3.storagarage.com",
+        "registry.storagarage.com",
+        "store.storagarage.com",
+        "ssm.storagarage.com"
+      ],
       "url": "https://web.storagarage.com",
+      "menuDomains": {
+        "main": "https://web.storagarage.com",
+        "storage": "https://s3.storagarage.com",
+        "registry": "https://registry.storagarage.com",
+        "publishing": "https://store.storagarage.com",
+        "secrets": "https://ssm.storagarage.com"
+      },
       "runtime": "qwik-node",
       "buildCommand": "bun run build.client && bun run build.server",
       "entry": "build/entry.node-server.js",
@@ -86,6 +100,11 @@
       ],
       "publicEnv": {
         "PUBLIC_SITE_URL": "https://web.storagarage.com",
+        "PUBLIC_STORAGE_URL": "https://s3.storagarage.com",
+        "PUBLIC_REGISTRY_URL": "https://registry.storagarage.com",
+        "PUBLIC_STORE_URL": "https://store.storagarage.com",
+        "PUBLIC_SSM_URL": "https://ssm.storagarage.com",
+        "PUBLIC_STORAGARAGE_ORIGINS": "https://web.storagarage.com,https://s3.storagarage.com,https://registry.storagarage.com,https://store.storagarage.com,https://ssm.storagarage.com",
         "PUBLIC_SSO_URL": "https://sso.ndmastery.com",
         "PUBLIC_SSO_CLIENT_ID": "storagarage",
         "STORAGARAGE_BACKEND_WS_URL": "ws://server-ndmastery-stable.ndmastery.svc.cluster.local:4000/storagarage",
